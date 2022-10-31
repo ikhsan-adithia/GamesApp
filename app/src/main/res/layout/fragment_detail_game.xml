@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="6dp"
+        android:background="@color/purple_700">
+
+        <TextView
+            android:id="@+id/tvDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:text="Detail" />
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvDetail"
+            android:layout_alignBottom="@+id/tvDetail"
+            android:layout_alignParentStart="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_chevron_left" />
+
+        <ImageView
+            android:id="@+id/btnBookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvDetail"
+            android:layout_alignBottom="@+id/tvDetail"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_bookmark_border" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imvBanner"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Title game"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvReleaseDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                tools:text="Release date 2020-12-30"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="6dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="center_vertical"
+                    tools:text="4.5"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_star" />
+
+                <TextView
+                    android:id="@+id/tvPlayerCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    tools:text="200 played"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_gamepad" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer euismod lobortis urna quis sollicitudin. Vivamus maximus libero ut leo aliquam facilisis. Suspendisse semper dapibus rhoncus. Nulla id semper dolor. Sed non libero felis. Quisque pellentesque erat nec dapibus rhoncus. Quisque nec iaculis enim. Donec a laoreet nisl. Integer in lacus ligula. Morbi non purus sed augue congue pellentesque. Sed eleifend metus sit amet scelerisque tincidunt. Morbi a dignissim sem. Maecenas aliquam efficitur tellus in vulputate. Pellentesque elementum aliquam sapien, vitae laoreet orci iaculis eu. Mauris at sodales enim. Duis leo tellus, elementum sed eros id, venenatis pulvinar ligula."
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

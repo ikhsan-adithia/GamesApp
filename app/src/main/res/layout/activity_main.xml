@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fc"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bnv"
+        android:layout_centerInParent="true"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnv"
+        android:theme="@style/Theme.MaterialComponents"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:visibility="visible"
+        app:menu="@menu/bottom_nav_menu"
+        android:layout_centerHorizontal="true"
+        app:elevation="5dp"
+        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="selected"/>
+
+</RelativeLayout>
