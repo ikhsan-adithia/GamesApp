@@ -1,5 +1,6 @@
 package com.test.perqaratest.presentation.game_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.perqaratest.data.utils.Result
@@ -27,6 +28,15 @@ class GamesViewModel @Inject constructor(
         }
     }
 
+    private val _flow = MutableStateFlow(0)
+    val flow get(): StateFlow<Int> = _flow
+
+    fun emit(int: Int) {
+        println(int)
+        _flow.update { int }
+    }
+
+
     init {
         getGames(1)
     }
@@ -52,12 +62,13 @@ class GamesViewModel @Inject constructor(
     }
 
     private var job: Job? = null
-    private fun getGames(page: Int) {
+    fun getGames(page: Int) {
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO + handler) {
             delay(500L)
             repository.getGameList(page, state.value.search)
                 .onEach { result ->
+                    println("result "+result.data)
                     when (result) {
                         is Result.Success -> {
                             _state.update {
