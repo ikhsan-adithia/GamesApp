@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GamesViewModel @Inject constructor(
-    private val repository: GameRepository
+    private val repository: @JvmSuppressWildcards GameRepository,
+    private val dispatcher: @JvmSuppressWildcards CoroutineDispatcher
 ): ViewModel() {
 
     private val _state = MutableStateFlow(GamesState())
@@ -23,19 +24,25 @@ class GamesViewModel @Inject constructor(
     val uiEvent get() = _uiEvent.asSharedFlow()
 
     private val handler = CoroutineExceptionHandler { _, exception ->
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _uiEvent.emit(UiEvent.ShowSnackbar(exception.message ?: "An error has occurred"))
         }
     }
 
-    private val _flow = MutableStateFlow(0)
-    val flow get(): StateFlow<Int> = _flow
-
+    private var fooJob: Job? = null
     fun emit(int: Int) {
-        println(int)
-        _flow.update { int }
+        fooJob?.cancel()
+        fooJob = viewModelScope.launch(dispatcher) {
+            delay(500L)
+            println(int)
+            repository.foo(int)
+                .onEach { int ->
+                    println(int)
+                    _state.update { it.copy(currentPage = int) }
+                }
+                .launchIn(this)
+        }
     }
-
 
     init {
         getGames(1)
@@ -48,14 +55,14 @@ class GamesViewModel @Inject constructor(
     }
 
     fun searchGames(search: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _state.update { it.copy(search = search) }
             getGames(1)
         }
     }
 
     fun resetSearchGames() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _state.update { it.copy(search = null) }
             getGames(1)
         }
@@ -64,7 +71,7 @@ class GamesViewModel @Inject constructor(
     private var job: Job? = null
     fun getGames(page: Int) {
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO + handler) {
+        job = viewModelScope.launch(dispatcher + handler) {
             delay(500L)
             repository.getGameList(page, state.value.search)
                 .onEach { result ->

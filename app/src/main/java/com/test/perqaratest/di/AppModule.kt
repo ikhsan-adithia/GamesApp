@@ -6,6 +6,8 @@ import com.test.perqaratest.data.local.GameDatabase
 import com.test.perqaratest.data.remote.RawrService
 import com.test.perqaratest.data.repository.GameRepositoryImpl
 import com.test.perqaratest.domain.repository.GameRepository
+import com.test.perqaratest.utils.DispatcherProvider
+import com.test.perqaratest.utils.StandardDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +19,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideDispatchers(): DispatcherProvider = StandardDispatchers()
 
     @Provides
     @Singleton
@@ -38,5 +44,5 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGameRepository(service: RawrService, db: GameDatabase): GameRepository = GameRepositoryImpl(service, db.dao)
+    fun provideGameRepository(service: RawrService, db: GameDatabase, dispatcherProvider: DispatcherProvider): GameRepository = GameRepositoryImpl(service, db.dao, dispatcherProvider.io)
 }

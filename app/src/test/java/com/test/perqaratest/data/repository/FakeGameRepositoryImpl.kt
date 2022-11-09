@@ -5,6 +5,7 @@ import com.test.perqaratest.data.models.GameItem
 import com.test.perqaratest.data.models.GameList
 import com.test.perqaratest.data.utils.Result
 import com.test.perqaratest.domain.repository.GameRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -37,6 +38,12 @@ class FakeGameRepositoryImpl: GameRepository {
 
     fun setSuccess(state: Boolean) {
         isSuccess = state
+    }
+
+    override fun foo(int: Int): Flow<Int> = flow {
+        emit(0)
+        delay(100L)
+        emit(int)
     }
 
     override fun getGameList(page: Int, search: String?): Flow<Result<GameList>> = flow {

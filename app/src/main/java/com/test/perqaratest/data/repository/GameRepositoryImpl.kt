@@ -6,13 +6,24 @@ import com.test.perqaratest.data.models.GameList
 import com.test.perqaratest.data.remote.RawrService
 import com.test.perqaratest.data.utils.Result
 import com.test.perqaratest.domain.repository.GameRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class GameRepositoryImpl(
+class GameRepositoryImpl @Inject constructor(
     private val service: RawrService,
-    private val dao: GameDao
+    private val dao: GameDao,
+    private val dispatcher: CoroutineDispatcher
 ): GameRepository {
+
+    override fun foo(int: Int): Flow<Int> = flow {
+        emit(0)
+        delay(100L)
+        emit(int)
+    }.flowOn(dispatcher)
 
     override suspend fun addToBookmark(game: Game) {
         dao.addToBookmark(game.copy(isBookmarked = true))
@@ -23,7 +34,7 @@ class GameRepositoryImpl(
     }
 
     override fun getBookmarkedGames(): Flow<List<Game>> =
-        dao.getBookmarkedGames()
+        dao.getBookmarkedGames().flowOn(dispatcher)
 
     override fun getGameList(page: Int, search: String?): Flow<Result<GameList>> = flow {
         emit(Result.Loading())
@@ -33,11 +44,11 @@ class GameRepositoryImpl(
         if (result.isSuccessful) {
             result.body()?.let {
                 emit(Result.Success(it))
-            }
+            } ?: emit(Result.Error(message = "An error has occurred"))
         } else {
             emit(Result.Error(message = "An error has occurred"))
         }
-    }
+    }.flowOn(dispatcher)
 
     override fun getGame(id: Int): Flow<Result<Game>> = flow {
         val cachedGame = dao.getBookmarkedGame(id)
@@ -53,9 +64,9 @@ class GameRepositoryImpl(
                     it.copy(isBookmarked = false)
                 }
                 emit(Result.Success(data))
-            }
+            } ?: emit(Result.Error(message = "An error has occurred"))
         } else {
             emit(Result.Error(message = "An error has occurred"))
         }
-    }
+    }.flowOn(dispatcher)
 }

@@ -16,4 +16,6 @@ interface GameRepository {
     suspend fun removeBookmark(id: Int)
 
     fun getBookmarkedGames(): Flow<List<Game>>
+
+    fun foo(int: Int): Flow<Int>
 }
